@@ -5922,6 +5922,10 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 
 	dev_dbg(codec->dev, "%s()\n", __func__);
 
+#ifdef CONFIG_SOUND_CONTROL
+	sound_control_codec_ptr = codec;
+#endif
+
 	msm8x16_wcd_priv = kzalloc(sizeof(struct msm8x16_wcd_priv), GFP_KERNEL);
 	if (!msm8x16_wcd_priv)
 		return -ENOMEM;
@@ -6458,6 +6462,19 @@ static int msm8x16_wcd_spmi_probe(struct spmi_device *spmi)
 	}
 	dev_set_drvdata(&spmi->dev, msm8x16);
 	spmi_dev_registered_cnt++;
+
+#ifdef CONFIG_SOUND_CONTROL
+	sound_control_kobj = kobject_create_and_add("sound_control", kernel_kobj);
+	if (sound_control_kobj == NULL) {
+		pr_warn("%s kobject create failed!\n", __func__);
+        }
+
+	ret = sysfs_create_group(sound_control_kobj, &sound_control_attr_group);
+        if (ret) {
+		pr_warn("%s sysfs file create failed!\n", __func__);
+	}
+#endif
+
 register_codec:
 	if ((spmi_dev_registered_cnt == MAX_MSM8X16_WCD_DEVICE) && (!ret)) {
 		if (msm8x16_wcd_modules[0].spmi) {
