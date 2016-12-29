@@ -23,6 +23,7 @@
 #include <linux/err.h>
 #include <linux/string.h>
 #include <linux/hardware_info.h>
+#include <linux/display_state.h>
 
 #include "mdss_dsi.h"
 #include "mdss_debug.h"
@@ -45,6 +46,12 @@ extern char Lcm_name[HARDWARE_MAX_ITEM_LONGTH];
 extern bool is_Lcm_Present;
 
 DEFINE_LED_TRIGGER(bl_led_trigger);
+
+bool display_on = true;
+bool is_display_on()
+{
+	return display_on;
+}
 
 void mdss_dsi_panel_pwm_cfg(struct mdss_dsi_ctrl_pdata *ctrl)
 {
@@ -1036,6 +1043,7 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 #ifdef CONFIG_POWERSUSPEND
        set_power_suspend_state_panel_hook(POWER_SUSPEND_ACTIVE);
 #endif
+	display_on = false;
 
 	display_on = false;
 
@@ -1056,6 +1064,8 @@ static int mdss_dsi_panel_low_power_config(struct mdss_panel_data *pdata,
 		pr_err("%s: Invalid input data\n", __func__);
 		return -EINVAL;
 	}
+
+	display_on = true;
 
 	pinfo = &pdata->panel_info;
 	ctrl = container_of(pdata, struct mdss_dsi_ctrl_pdata,
