@@ -288,6 +288,9 @@ config CPU_FREQ_GOV_IMPULSE
 
 	  If in doubt, say N.
 
+config CPU_FREQ_GOV_INTERACTIVEX
+	tristate "'interactivex' cpufreq policy governor"
+
 config CPU_FREQ_GOV_ELEMENTALX
 	tristate "'elementalx' cpufreq policy governor"
 	select CPU_FREQ_TABLE
