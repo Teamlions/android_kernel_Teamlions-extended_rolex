@@ -1,23 +1,23 @@
 #!/bin/bash
 # Author- Muralivijay, bitrvmpd
 clear
-echo "#########################################"
-echo "##### rolex Kernel - Build Script ########"
-echo "#########################################"
+echo "#######################################################"
+echo "##### Teamlions-Extended Kernel - Build Script ########"
+echo "#######################################################"
 
 # Any2kernel2
 echo "Clone Any2kernel2 if you don,t have "
-git clone https://github.com/muralivijay/AnyKernel2.git -b pie-rolex ~/AnyKernel2
+git clone https://github.com/muralivijay/AnyKernel2.git -b 9.0-teamlions-rolex ~/AnyKernel2_teamlions/
 
 # Toolchain
-echo "Clone aarch64-linux-android-4.9 toolchain if you don,t have "
-git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b master ~/aarch64-linux-android-4.9
+echo "Clone Linaro arm64 toolchain if you don,t have "
+git clone https://github.com/Teamlions/aarch64-linux-gnu-7.3.git aarch64-linux-gnu-7.3
 
 # Make clean build
 echo "${blu}Make clean build?${txtrst}"
 select yn in "Yes" "No"; do
     case $yn in
-        Yes ) make clean && make mrproper && ~/AnyKernel2/cleanup.sh ; break;;
+        Yes ) make clean && make mrproper && sh ~/AnyKernel2_teamlions/cleanup.sh ; break;;
         No ) break;;
     esac
 done
@@ -57,7 +57,7 @@ fi
 # ==================================
 # point CROSS_COMPILE to the folder of the desired toolchain
 # don't forget to specify the prefix. Mine is: aarch64-linux-android-
-CROSS_COMPILE=~/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+CROSS_COMPILE=~/aarch64-linux-gnu-7.3/bin/aarch64-linux-gnu-
 
 # Are we using ccache?
 if [ -n "$USE_CCACHE" ]
@@ -66,7 +66,9 @@ then
 fi
 
 # Export ARCH-arm64 & Launch rolex
-export ARCH=arm64 && export SUBARCH=arm64 && make rolex_defconfig
+echo " Config Kernel if you want add or disable any driver or feature "
+echo "                                                                "
+export ARCH=arm64 && export SUBARCH=arm64 && make rolex_defconfig && make menuconfig
 
 # Build Process
 echo -e "> Opening rolex_config file...\n"
@@ -77,9 +79,9 @@ start=$SECONDS
 
 # Get current kernel version
 KERNEL_VERSION=$(head -n3 Makefile | sed -E 's/.*(^\w+\s[=]\s)//g' | xargs | sed -E 's/(\s)/./g')
-echo -e "\n\n> Packing rolex Kernel v$KERNEL_VERSION\n\n"
-# Pack the kernel as a flashable TWRP zip. Oreo Edition
-~/AnyKernel2/build.sh $KERNEL_VERSION PIE
+echo -e "\n\n> Packing Teamlions-Extended Kernel v$KERNEL_VERSION\n\n"
+# Pack the kernel as a flashable TWRP zip. Pie Edition
+~/AnyKernel2_teamlions/build.sh $KERNEL_VERSION PIE
 
 end=$SECONDS
 duration=$(( end - start ))
