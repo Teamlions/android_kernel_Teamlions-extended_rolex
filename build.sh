@@ -11,7 +11,7 @@ git clone https://github.com/muralivijay/AnyKernel2.git -b 9.0-teamlions-rolex ~
 
 # Toolchain
 echo "Clone Linaro arm64 toolchain if you don,t have "
-git clone https://github.com/Teamlions/aarch64-linux-gnu-7.3.git aarch64-linux-gnu-7.3
+git clone https://github.com/Teamlions/aarch64-linux-gnu-7.3.git ~/aarch64-linux-gnu-7.3
 
 # Make clean build
 echo "${blu}Make clean build?${txtrst}"
