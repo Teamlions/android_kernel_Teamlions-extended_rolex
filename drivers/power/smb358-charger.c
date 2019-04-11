@@ -199,6 +199,10 @@
 #define BATTERY_FCC 3000
 #endif
 
+/* Force fastcharging */
+#ifdef CONFIG_FORCE_FAST_CHARGE
+#include <linux/fastchg.h>
+#endif
 
 int pre_usb_current_ma = -EINVAL;
 bool thermal = false;
@@ -1441,6 +1445,13 @@ static int smb358_set_usb_chg_current(struct smb358_charger *chip,
 	}
 	if (current_ma < USB3_MIN_CURRENT_MA && current_ma != 2)
 		current_ma = USB2_MIN_CURRENT_MA;
+
+#ifdef CONFIG_FORCE_FAST_CHARGE
+	if (force_fast_charge > 0 && current_ma == USB2_MAX_CURRENT_MA)
+	{
+		current_ma == USB3_MAX_CURRENT_MA;
+	}
+#endif
 
 	if (current_ma == USB2_MIN_CURRENT_MA) {
 		/* USB 2.0 - 100mA */
