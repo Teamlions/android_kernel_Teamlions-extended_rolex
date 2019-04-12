@@ -1232,6 +1232,11 @@ static int smb358_get_prop_batt_capacity(struct smb358_charger *chip)
 
 	pr_debug("Couldn't get bms_psy, return default capacity\n");
 	return SMB358_DEFAULT_BATT_CAPACITY;
+
+	#ifdef CONFIG_QUICK_CHARGE
+	// Report the Battery-Level to the Quick Charge Driver.
+	batt_level SMB358_DEFAULT_BATT_CAPACITY;
+	#endif
 }
 
 static int get_prop_current_now(struct smb358_charger *chip)
@@ -2786,10 +2791,25 @@ static int smb_parse_dt(struct smb358_charger *chip)
 	else
 		chip->chg_valid_act_low = gpio_flags & OF_GPIO_ACTIVE_LOW;
 
+        #ifdef CONFIG_QUICK_CHARGE
+	// If Quick Charge is Enabled, then Set the Max. Current to the Value of Dynamic Current of the Driver.
+	if (QC_Toggle == 1)
+	   chip->fastchg_current_max_ma = Dynamic_Current;
+	else
+	{
+	// If Quick Charge is Disabled, then Restore the Max. Current Value to the Default as Specified in DTB.
 	rc = of_property_read_u32(node, "qcom,fastchg-current-max-ma",
 						&chip->fastchg_current_max_ma);
 	if (rc)
 		chip->fastchg_current_max_ma = SMB358_FAST_CHG_MAX_MA;
+	}
+        #else
+	// If Quick Charge is not Compiled, then Read the Default Value only
+	rc = of_property_read_u32(node, "qcom,fastchg-current-max-ma",
+						&chip->fastchg_current_max_ma);
+	if (rc)
+		chip->fastchg_current_max_ma = SMB358_FAST_CHG_MAX_MA;
+        #endif
 
 	chip->iterm_disabled = of_property_read_bool(node,
 					"qcom,iterm-disabled");
