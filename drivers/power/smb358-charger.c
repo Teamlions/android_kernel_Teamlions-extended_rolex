@@ -204,6 +204,11 @@
 #include <linux/fastchg.h>
 #endif
 
+#ifdef CONFIG_QUICK_CHARGE
+// Include the Header File of Quick Charge for Access to the Status and Dynamic Current of the Driver as well as for Reporting the Battery-Level to the Driver.
+#include <linux/Quick_Charge.h>
+#endif
+
 int pre_usb_current_ma = -EINVAL;
 bool thermal = false;
 bool recovery = false;
