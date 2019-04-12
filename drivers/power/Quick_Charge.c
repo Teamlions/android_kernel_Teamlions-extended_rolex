@@ -63,7 +63,7 @@ static ssize_t dynamic_current_show(struct kobject *kobj, struct kobj_attribute 
 
 static struct kobj_attribute qc_toggle_attribute =
 	__ATTR(QC_Toggle,
-		0666,
+		0660,
 		qc_toggle_show,
 		qc_toggle_store);
 

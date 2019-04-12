@@ -1240,7 +1240,7 @@ static int smb358_get_prop_batt_capacity(struct smb358_charger *chip)
 
 	#ifdef CONFIG_QUICK_CHARGE
 	// Report the Battery-Level to the Quick Charge Driver.
-	batt_level SMB358_DEFAULT_BATT_CAPACITY;
+	batt_level (ret.intval);
 	#endif
 }
 
