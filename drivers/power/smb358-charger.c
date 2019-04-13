@@ -1237,11 +1237,6 @@ static int smb358_get_prop_batt_capacity(struct smb358_charger *chip)
 
 	pr_debug("Couldn't get bms_psy, return default capacity\n");
 	return SMB358_DEFAULT_BATT_CAPACITY;
-
-	#ifdef CONFIG_QUICK_CHARGE
-	// Report the Battery-Level to the Quick Charge Driver.
-	batt_level (ret.intval);
-	#endif
 }
 
 static int get_prop_current_now(struct smb358_charger *chip)

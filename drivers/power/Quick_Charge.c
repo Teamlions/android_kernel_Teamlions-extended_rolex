@@ -24,16 +24,6 @@
 int QC_Toggle = ENABLED;
 int Dynamic_Current = CURRENT;
 
-void batt_level (int Battery_Status)
-{
-	if (Battery_Status >= 0 && Battery_Status <= 60)
-	   Dynamic_Current = 1500;
-	else if (Battery_Status >= 61 && Battery_Status <= 90)
-		Dynamic_Current = 1250;
-	else if (Battery_Status >= 91 && Battery_Status <= 100)
-  	        Dynamic_Current = 1000;
-}
-
 static ssize_t qc_toggle_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
 	return sprintf(buf, "%d", QC_Toggle);
