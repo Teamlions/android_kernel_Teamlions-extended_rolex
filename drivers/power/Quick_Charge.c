@@ -19,7 +19,7 @@
 
 #define ENABLED			1
 #define QUICK_CHARGE		"Quick_Charge"
-#define CURRENT			1250
+#define CURRENT			1500
 
 int QC_Toggle = ENABLED;
 int Dynamic_Current = CURRENT;
